@@ -1,0 +1,72 @@
+{% block javascripts %}
+<script src="https://www.google.com/recaptcha/api.js?render=6Lc20pUUAAAAAMIpwsIR6-yeTOqRg22mtEhD_4bR"></script>
+<script>
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6Lc20pUUAAAAAMIpwsIR6-yeTOqRg22mtEhD_4bR', {action: 'contacts'}).then(function (token) {
+            var gRecaptchaResponse = document.getElementById('gRecaptchaResponse');
+            gRecaptchaResponse.value = token;
+        });
+    });
+</script>
+{% endblock %}
+<section id="contacts" class="contacts ui-section">
+    <div class="container">
+
+        <div class="contacts-content">
+            <div class="row">
+
+                <div class="col-12 col-lg-6 contacts-bot">
+
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <h2 class="ui-section__title _line">Связаться с нами</h2>
+                    <div class="contacts-item__text ui-section__text mb-20">
+                        Хотите стать партнером, нужна дополнительная информация или у Вас есть предложение?
+                    </div>
+                    <form id="contacts-form"
+                          method="POST">
+
+                        <div class="contacts-form_input">
+                            <input type="text" class="contacts-input input__field" name="name" id="formName"
+                                   required="required" minlength="2" autocomplete="off">
+                            <label for="formName" class="input__label">
+                                <span class="input__label_content">Имя*</span>
+                            </label>
+                        </div>
+                        <div class="contacts-form_input">
+                            <input type="text" class="contacts-input input__field" name="email" id="formEmail"
+                                   required="required" minlength="5" autocomplete="off">
+                            <label for="formEmail" class="input__label">
+                                <span class="input__label_content">Email*</span>
+                            </label>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="text" class="contacts-input js-phone-mask" placeholder="+7 (495) 123-45-67"
+                                       name="phone" id="formPhone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="contacts-form_input">
+                            <input type="text" class="contacts-input input__field" name="question" id="formQuestion"
+                                   minlength="2" autocomplete="off">
+                            <label for="formQuestion" class="input__label">
+                                <span class="input__label_content">Тема обращения</span>
+                            </label>
+                        </div>
+
+                        <div class="contacts-form__text">
+                            * Обязательные к заполнению поля
+                        </div>
+
+                        <input type="hidden" name="g-recaptcha-response" id="gRecaptchaResponse"/>
+                        <button class="contacts-action btn btn-main" type="submit" form-sended="Отправлено"
+                                form-default="Отправить"><span>Отправить</span></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+

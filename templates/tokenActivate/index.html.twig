@@ -1,0 +1,33 @@
+{% extends 'tokenActivate/base.html.twig' %}
+
+{% block title %}Активация токена!{% endblock %}
+
+{% block body %}
+    <div class="activation-body">
+        <div class="activation-logo">
+            <img src="{{ asset('img/logo.svg') }}" alt="">
+        </div>
+        <div class="activation-title">Активация сервисного<br> пакета</div>
+        <div class="activation-inputs">
+            <div class="activation-input-block">
+                <div class="activation-input-title">Введите код активации полученный на чеке или в СМС</div>
+                <div className="activation-input-wrapp">
+                    <label className="input-block">
+                        <input type="text" class="input" placeholder="_______">
+                    </label>
+                </div>
+            </div>
+            <div class="activation-input-block">
+                <div class="activation-input-title">Ваш номер телефона</div>
+                <div class="activation-input-wrapp">
+                    <label class="input-block">
+                        <input type="tel" class="input" placeholder="+7 (___) - ___ -  ____">
+                    </label>
+                </div>
+            </div>
+            <div class="activation-submit-block">
+                <button class="btn">Активировать</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

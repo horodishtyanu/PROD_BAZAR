@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="ru-RU">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE"/>
+    <meta name="format-detection" content="telephone=no"/>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('landing/build/img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landing/build/img/favicon-16x16.png') }}">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>Цифровой базар - дистрибьютор цифрового контента</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link href="{{ asset('landing/build/css/main.css') }}" type="text/css" rel="stylesheet">
+
+
+
+</head>
+<body>
+{% block javascripts %}
+    <script src="{{ asset('landing/build/js/modernizr.js') }}"></script>
+{% endblock %}
+    <a id="top" name="top"></a>
+    <header id="header" class="header">
+        <div class="header-panel">
+            <div class="container-fluid">
+
+                <nav class="main-menu d-none d-xl-block order-xl-2">
+                    <ul class="main-menu__list ">
+                        <li class="main-menu__item">
+                            <a href="#about" class="main-menu__link js-anchor"><span>О нас</span></a>
+                        </li>
+
+                        <li class="main-menu__item">
+                            <a href="#advantages" class="main-menu__link js-anchor"><span>Чем мы лучше</span></a>
+                        </li>
+
+                        <li class="main-menu__item">
+                            <a href="#packages" class="main-menu__link js-anchor"><span>Наши продукты</span></a>
+                        </li>
+
+                        <li class="main-menu__item">
+                            <a href="#contacts" class="main-menu__link js-anchor"><span>Стать партнером</span></a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="header-panel-right order-xl-3">
+
+                    <div class="header-panel-right__action d-none d-xl-inline-block">
+                        <a href="#contacts-form" class="btn btn-white js-anchor">Связаться с нами</a>
+                    </div>
+
+                    <div class="header-panel-right__burger d-inline-block d-xl-none">
+                        <a
+                            href="javascript:"
+                            data-target="#menu-mobile"
+                            class="menu-icon collapsed"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            aria-controls="menu-mobile"
+                        >=</a>
+                    </div>
+                </div>
+                
+                <div class="logo order-xl-1">
+                    <img src="{{ asset('landing/build/img/logo.svg') }}"
+                        data-logo="{{ asset('landing/build/img/logo.svg') }}"
+                        data-logo-white="{{ asset('landing/build/img/logo.svg') }}">
+                </div>
+
+            </div>
+        </div>
+
+        <div id="menu-mobile" class="menu-mobile collapse" >
+            <div class="menu-mobile__inner">
+
+                <nav class="mobile-menu">
+                    <ul class="mobile-menu__list ">
+                        <li class="mobile-menu__item">
+                            <a href="#about" class="mobile-menu__link js-anchor"><span>О нас</span></a>
+                        </li>
+
+                        <li class="mobile-menu__item">
+                            <a href="#advantages" class="mobile-menu__link js-anchor"><span>Чем мы лучше</span></a>
+                        </li>
+
+                        <li class="mobile-menu__item">
+                            <a href="#packages" class="mobile-menu__link js-anchor"><span>Наши продукты</span></a>
+                        </li>
+
+                        <li class="mobile-menu__item">
+                            <a href="#contacts" class="mobile-menu__link js-anchor"><span>Стать партнером</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            
+        </div>
+    </header>
+    <div class="page">

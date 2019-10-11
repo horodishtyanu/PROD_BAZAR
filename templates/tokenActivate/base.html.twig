@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('landing/build/img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landing/build/img/favicon-16x16.png') }}">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+</head>
+<body>
+<div class="activation">
+    <div class="container" id="root">
+        {% block body %}{% endblock %}
+    </div>
+</div>
+<footer class="activation-footer">
+    <div class="container">
+        <div class="activation-footer-row">
+            <div class="activation-footer-col">
+                <div class="activation-footer-content">
+                    Если у вас возникли трудности с активацией кода обратитесь в тех поддержку
+                    по адресу <a href="mailto:info@digitalbazaar.ru" target="_blank">info@digitalbazaar.ru</a> или по телефону <a href="tel:88003334667">8 (800) 333-46-67</a>
+                </div>
+            </div>
+            <div class="activation-footer-col">
+                <div class="activation-footer-content">
+                    <p>Сервис компании Цифровой Базара,
+                    <p>Адрес 115088, г. Москва, ул. Южнопортовая, д.5, стр. 1 <a href="mailto:info@digitalbazaar.ru" target="_blank">info@digitalbazaar.ru</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% block javascripts %}
+    <!-- Include the compiled script-->
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>

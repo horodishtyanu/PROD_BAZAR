@@ -1,0 +1,48 @@
+<?
+$partners = array(
+    array(
+        'PARTNERS_IMAGE' => '/include/img/logo_magix.png',
+        'PARTNERS_TITLE' => 'Magix',
+    ),
+    array(
+        'PARTNERS_IMAGE' => '/include/img/logo_microsoft.png',
+        'PARTNERS_TITLE' => 'Microsoft',
+    ),
+    array(
+        'PARTNERS_IMAGE' => '/include/img/logo_panda.png',
+        'PARTNERS_TITLE' => 'Panda',
+    ),
+    array(
+        'PARTNERS_IMAGE' => '/include/img/logo_softorbits.png',
+        'PARTNERS_TITLE' => 'Softorbits',
+    ),
+    array(
+        'PARTNERS_IMAGE' => '/include/img/logo_movavi.svg',
+        'PARTNERS_TITLE' => 'Movavi',
+    ),
+    array(
+        'PARTNERS_IMAGE' => '/include/img/logo_yandex.svg',
+        'PARTNERS_TITLE' => 'Яндекс',
+    ),
+);
+?>
+
+<section id="partners" class="partners ui-section carousel" data-rows="2">
+    <div class="container">
+        <div class="partners-content">
+            <h2 class="ui-section__title _line">Наши поставщики</h2>
+            <? /* <div class="partners-content__text">Мы сотрудничаем с множеством компаний, выстраиваем долгосрочные отношения. Опыт и знания помогают нам предоставлять качественный сервис, поэтому клиенты доверяют нам.</div> */ ?>
+        </div>
+        <div class="partners-list">
+            <? foreach ($partners as $key => $item): ?>
+                <div class="partners-item">
+                    <div class="partners-item__inner">
+                        <div class="partners-item__image">
+                            <img src="<?= $item['PARTNERS_IMAGE'] ?>" alt="<?= $item['PARTNERS_TITLE'] ?>">
+                        </div>
+                    </div>
+                </div>
+            <? endforeach; ?>
+        </div>
+    </div>
+</section>

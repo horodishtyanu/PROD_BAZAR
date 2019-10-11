@@ -1,0 +1,100 @@
+<?
+  $products = array(
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-nod32-smart-security-business-edition.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET NOD32 Smart Security<br/>Business Edition', // Заголовок
+        'PRODUCTS_TEXT'      => 'Комплексное бизнес-решение для оперативного сканирования и распознавания всех типов угроз.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-nod32-antivirus-business-edition.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET NOD32 Antivirus<br/>Business Edition', // Заголовок
+        'PRODUCTS_TEXT'      => 'Бизнес-решение для централизованной защиты от интернет-угроз, троянских программ, шпионского и рекламного ПО.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-nod32-secure-enterprise.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET NOD32<br/>Secure Enterprise', // Заголовок
+        'PRODUCTS_TEXT'      => 'Оптимальный уровень безопасности системы, высокая производительность при минимальных системных требованиях.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-mail-security-for-microsoft-exchange-server.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET Mail Security<br/>для Microsoft Exchange Server', // Заголовок
+        'PRODUCTS_TEXT'      => 'Решение для защиты почтовых серверов от всех типов вредоносного программного обеспечения и фильтрации почтовых сообщений в режиме реального времени.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-mail-security-for-linux-freebsd.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET Mail Security<br/>для Linux / FreeBSD', // Заголовок
+        'PRODUCTS_TEXT'      => 'Решение для защиты почтовых серверов. Практически не оказывает влияния на производительность и быстродействие системы в целом.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-mail-security-for-ibm-domino.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET Mail Security<br/>для IBM Domino', // Заголовок
+        'PRODUCTS_TEXT'      => 'Специализированное антивирусное решение для защиты почтовых серверов IBM Domino.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-file-security-for-microsoft-windows-server.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET File Security<br/>для Microsoft Windows Server', // Заголовок
+        'PRODUCTS_TEXT'      => 'Решение для защиты файловых серверов на ОС Microsoft Windows Server. Обеспечивает защиту персональных и платежных данных.', // Краткое описание
+    ),   
+	array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-file-security-for-linux-freebsd.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET File Security<br/>для Linux / FreeBSD', // Заголовок
+        'PRODUCTS_TEXT'      => 'Современное решение для защиты файловых серверов. Практически не оказывает влияния на производительность и быстродействие системы в целом.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-secure-authentication.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET Secure Authentication', // Заголовок 
+        'PRODUCTS_TEXT'      => 'Надежное и простое средство двухфакторной аутентификации для доступа к корпоративной сети.', // Краткое описание
+    ),
+    array(
+        'PRODUCTS_IMAGE'     => '/include/img/product-secure-authentication.png', // Изображение
+        'PRODUCTS_TITLE'     => 'ESET Secure Authentication', // Заголовок
+        'PRODUCTS_TEXT'      => 'Надежное и простое средство двухфакторной аутентификации для доступа к корпоративной сети.', // Краткое описание
+    )
+  );
+?>
+
+<section id="products" class="products ui-section carousel" data-rows="1">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                <div class="products-content">
+                    <h2 class="ui-section__title _line">Наши пакетные предложения</h2>
+                </div>
+                <? /*
+                <div class="products__text">
+                    Spisso posset: surgere fert diversa fronde formas lumina addidit quem satuslapidosos stagna praecipites nec convexi adspirate vindice fuit mundi leviushaec fuerant bracchia rectumque.
+                </div>
+                */ ?>
+            </div>
+            <div class="col-12 col-lg-3">
+                <div class="js-carousel__counters">
+                    <div class="js-carousel__counters_count">
+                        <span class="js-carousel__counters_count-cur"></span>
+                        <span class="js-carousel__counters_count-sum"></span>
+                    </div>
+                    <a js-carousel-prev="" href="javascript:;" class="slider-arrows slider-prev"><span></span></a>
+                    <a js-carousel-next="" href="javascript:;" class="slider-arrows slider-next"><span></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="js-carousel">
+            <?foreach ($products as $key => $item):?>
+                    <div class="products-item">
+                        <div class="products-item__inner">
+                            <div class="products-item__image">
+                                <img src="<?=$item['PRODUCTS_IMAGE']?>" alt="<?=$item['PRODUCTS_TITLE']?>" >
+                            </div>
+                            <div class="products-item__title"><?=$item['PRODUCTS_TITLE']?></div>
+                            <div class="products-item__text"><?=$item['PRODUCTS_TEXT']?></div>
+                            <div class="products-item__action">
+                                <? /*<a href="#contacts" class="btn btn-primary js-anchor d-block mb-3" data-product-select="Тестировать <?=$item['PRODUCTS_TITLE']?>">Тестировать</a> */ ?>
+                                <a href="#contacts" class="btn btn-main js-anchor d-block">
+                                    <span>Узнать цены</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            <?endforeach;?>
+        </div>
+    </div>
+</section>

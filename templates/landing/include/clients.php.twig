@@ -1,0 +1,81 @@
+<?
+  $clients = array(
+    array(
+      'CLIENTS_IMAGE'     => '/include/img/bontyr.jpg', // Изображение
+      'CLIENTS_PDF'       => '/include/img/bontyr.pdf', // PDF
+      'CLIENTS_TITLE'     => 'Bontour', // Заголовок
+      'CLIENTS_CITY'      => 'Санкт-Петербург', // Город
+      'CLIENTS_TEXT'      => 'От лица нашей фирмы ооо «бон тур» выражаем свою благодарность компании ооо
+							«Digital Trade» за качественную работу по обеспечению эффективности наших компьютерных систем, а также за гарантию защиты наших информационных ресурсов. Транспортно—турйстическая компания «бон тур» находится на рынке путешествий около 20 лет, из них 2 года наша компания успешно сотрудничает с вами.', // Краткое описание
+    ),
+    array(
+        'CLIENTS_IMAGE'     => '/include/img/iflex.png', // Изображение
+        'CLIENTS_PDF'       => '/include/img/iflex.pdf', // PDF
+        'CLIENTS_TITLE'     => 'Iflex', // Заголовок
+        'CLIENTS_CITY'      => 'Москва', // Город
+        'CLIENTS_TEXT'      => 'Компания «айФлекс», работающая на рынке разработки программного обеспечения с 2005 года. выражает свою благодарность компании 000 "Digital Trade" за поставку антивирусных решений ESET NOD32 для более чем 70 рабочих станций. При выборе антивирусного продукта основное внимание уделялось эффективности защиты, малому влиянию на загрузку систем и вычислительных мощностей, простоте настройки.', // Краткое описание
+    ),
+    array(
+        'CLIENTS_IMAGE'     => '/include/img/iflex.png', // Изображение
+        'CLIENTS_PDF'       => '/include/img/iflex.pdf', // PDF
+        'CLIENTS_TITLE'     => 'Iflex', // Заголовок
+        'CLIENTS_CITY'      => 'Москва', // Город
+        'CLIENTS_TEXT'      => 'Компания «айФлекс», работающая на рынке разработки программного обеспечения с 2005 года. выражает свою благодарность компании 000 "Digital Trade" за поставку антивирусных решений ESET NOD32 для более чем 70 рабочих станций. При выборе антивирусного продукта основное внимание уделялось эффективности защиты, малому влиянию на загрузку систем и вычислительных мощностей, простоте настройки.', // Краткое описание
+    ),
+    array(
+        'CLIENTS_IMAGE'     => '/include/img/iflex.png', // Изображение
+        'CLIENTS_PDF'       => '/include/img/iflex.pdf', // PDF
+        'CLIENTS_TITLE'     => 'Iflex', // Заголовок
+        'CLIENTS_CITY'      => 'Москва', // Город
+        'CLIENTS_TEXT'      => 'Компания «айФлекс», работающая на рынке разработки программного обеспечения с 2005 года. выражает свою благодарность компании 000 "Digital Trade" за поставку антивирусных решений ESET NOD32 для более чем 70 рабочих станций. При выборе антивирусного продукта основное внимание уделялось эффективности защиты, малому влиянию на загрузку систем и вычислительных мощностей, простоте настройки.', // Краткое описание
+    )
+  );
+?>
+
+<section id="clients" class="clients ui-section carousel" data-rows="1">
+    <div class="container">
+        <div class="clients-content">
+            <h2 class="ui-section__title _line">Наши клиенты</h2>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                <div class="clients__text">Мнение нашего клиента — самое важное. Поделитесь впечатлениями о работе с нами.</div>
+            </div>
+            <div class="col-12 col-lg-3">
+                <div class="js-carousel__counters">
+                    <div class="js-carousel__counters_count">
+                        <span class="js-carousel__counters_count-cur"></span>
+                        <span class="js-carousel__counters_count-sum"></span>
+                    </div>
+                    <a js-carousel-prev="" href="javascript:;" class="slider-arrows slider-prev"><span></span></a>
+                    <a js-carousel-next="" href="javascript:;" class="slider-arrows slider-next"><span></span></a>
+                </div>
+            </div>
+        </div>
+        <div id="clients-carousel" class="js-carousel">
+            <?foreach ($clients as $key => $item):?>
+                <div class="clients-item">
+                    <div class="clients-item__inner">
+                        <div class="clients-item__img">
+                            <img src="<?=$item['CLIENTS_IMAGE']?>" alt="<?=$item['CLIENTS_TITLE']?>" >
+                        </div>
+                        <div class="clients-item__action">
+                            <span class="icon icon-more"></span>
+                        </div>
+                        <div class="clients-item__cover">
+                            <div class="clients-item__title">
+                                <div class="clients-item__company"><?=$item['CLIENTS_TITLE']?></div>
+                            </div>
+                            <div class="clients-item__text"><?=$item['CLIENTS_TEXT']?></div>
+                            <div class="clients-item__action">
+                                <a href="<?=$item['CLIENTS_PDF']?>" class="link link-pdf" download="<?=$item['CLIENTS_TITLE']?>.pdf">
+                                    <span class="icon icon-more-w"></span>Скачать PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?endforeach;?>
+        </div>
+    </div>
+</section>

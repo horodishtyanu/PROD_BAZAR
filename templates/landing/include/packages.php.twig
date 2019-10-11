@@ -1,0 +1,40 @@
+<section id="packages" class="clients ui-section carousel" data-rows="1">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="clients-content">
+                    <h2 class="ui-section__title _line">Наши продукты</h2>
+                </div>
+            </div>
+        </div>
+        <div id="clients-carousel" class="packages__list">
+            {% for pack in package %}
+                <div class="clients-item packages__item">
+                    <div class="clients-item__inner">
+                        <div class="clients-item__img">
+                            <img src="{{ pack.PACKAGE_IMAGE }}" alt="{{ pack.PACKAGE_TITLE | raw}}" >
+                        </div>
+                        <div class="clients-item__package-title">
+                            {{ pack.PACKAGE_TITLE | raw}}
+                        </div>
+                        <div class="clients-item__action">
+                            <span class="icon icon-more"></span>
+                        </div>
+                        <div class="clients-item__cover">
+                            <div class="clients-item__title">
+                                <div class="clients-item__company">{{ pack.PACKAGE_TITLE | raw}}</div>
+                            </div>
+                            <div class="clients-item__text">{{ pack.PACKAGE_TEXT | raw}}</div>
+                            <div class="clients-item__action">
+                                <a href="#contacts" class="btn btn-main js-anchor d-block">
+                                    <span>Узнать цены</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
