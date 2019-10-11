@@ -20,8 +20,7 @@ class Products extends React.Component{
                                 <div className="activation-download">
                                     <div className="activation-download__key">{item.order}</div>
                                     <div className="activation-download__body">
-                                        <div className="activation-download__title">{item.name}
-                                        </div>
+                                        <div className="activation-download__title" dangerouslySetInnerHTML={{ __html: item.name }} />
                                         {item.link !== null &&
                                         <a href={item.link} target="_blank" className="activation-download__link">
                                             <svg width="40" height="14" viewBox="0 0 40 15">

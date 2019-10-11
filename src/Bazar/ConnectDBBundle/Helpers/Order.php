@@ -73,13 +73,16 @@ class Order
 
 
 
-    public function getByProp($prop):BSaleOrder
+    public function getByProp($prop)
     {
-        dd($prop);
-        $orderId = $this->propertyRepo->findBy($prop, [], 1);
-        dd($orderId);
-        $this->Order = $this->orderRepo->find($orderId);
+        $orderId = $this->propertyRepo->findBy($prop);
+
+        if (empty($orderId)){
+            return false;
+        }
+        $this->Order = $this->orderRepo->find($orderId[0]->getOrderId());
         $this->craftOrder();
+
         return $this->Order;
     }
 
