@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fbeeb5e4-fcce-4dc4-adb3-be2adb3ed2b3" name="BAZAR_PROD" url="http://gw.s-online.ru">
+        <fileTransfer host="gw.s-online.ru" port="1419" privateKey="C:\Users\Alexander\Desktop\ESET\keys\id_rsa.ppk" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="1419" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

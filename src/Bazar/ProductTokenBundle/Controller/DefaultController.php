@@ -57,30 +57,21 @@ class DefaultController extends AbstractController
     {
         $requestData = json_decode($request->getContent(), true);
         $errors = [];
-        $data = [];
-        $order = new Order($em);
+        $orderClass = new Order($em);
         $repoProps = $this->getDoctrine()->getRepository(BSaleOrderPropsValue::class);
         $props = $repoProps->findBy(['code' => 'UNIQUE_KEYS_CODE', 'value' => $requestData['code']]);
-
         foreach ($props as $prop){
-            dd($prop->getOrderId());
-            $order = $order->getByProp(['code' => 'PHONE', 'value' => $requestData['phone'], 'orderId' => $prop->getOrderId()]);
+            $order = $orderClass->getByProp(['code' => 'PHONE', 'value' => $requestData['phone'], 'orderId' => $prop->getOrderId()]) ?: $orderClass->getByProp(['code' => 'PHONE', 'value' => $requestData['phone'], 'orderId' => $prop->getOrderId()]);
         }
 
         if (!$order){
             return $this->json(['errors' => $errors], 403);
         }
-        dd($order);
 
-
-        if ($order != '') {
-            $crypter = new Crypter($this->cryptoKey);
-            $this->authKey = $crypter->encrypt($order->getId());
-            $data = ['AuthToken' => $this->authKey];
-            $session->set('authKey', $this->authKey);
-        } else {
-            $errors[] = 'login error';
-        }
+        $crypter = new Crypter($this->cryptoKey);
+        $this->authKey = $crypter->encrypt($order->getId());
+        $data = ['AuthToken' => $this->authKey];
+        $session->set('authKey', $this->authKey);
 
         if (count($errors)) {
             return $this->json(['errors' => $errors], 403);
@@ -106,13 +97,19 @@ class DefaultController extends AbstractController
         $dbKey = \QSOFT\Distributor\DistributorNew::getKeys(['order_id' => $orderId], [], true);
         while ($arKey = $dbKey->Fetch())
         {
+            $product = \CIBlockElement::GetList(false, ['IBLOCK_ID' => 31, 'ID' => \CCatalogSKU::getProductList([$arKey['product_id']])[$arKey['product_id']]['ID']], false, false,['PROPERTY_TRIAL','DOWNLOAD_LINK', 'NAME', 'PREVIEW_TEXT'])->fetch();
             $item = $obOrder->getItemById($arKey['product_id']);
             $arKey['down_link'] = $item->getDownloadLink();
-            $arKey['name'] = \CIBlockElement::GetByID($arKey['product_id'])->fetch()['NAME'];
+            $arKey['name'] = $product['NAME'];
+
+            if ($product['PROPERTY_TRIAL_VALUE'] == 'Y'){
+                $arKey['key'] = $arKey['name'];
+                $arKey['name'] = $product['PREVIEW_TEXT'];
+
+            }
+
             $items[] = $arKey;
         }
-//        dd($items);
-//        dd($orderId);
         if ($request->headers->get('AuthToken') != $key) {
             return $this->json(['errors' => ['auth_error']], 403);
         }
