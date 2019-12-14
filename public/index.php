@@ -6,6 +6,10 @@ define("NOT_CHECK_PERMISSIONS", true);
 require_once $_SERVER["DOCUMENT_ROOT"].'/bitrix/modules/main/include/prolog_before.php';
 set_time_limit(0);
 
+
+\Bitrix\Main\Loader::includeModule('iblock');
+\Bitrix\Main\Loader::includeModule('catalog');
+\Bitrix\Main\Loader::includeModule('sale');
 while (ob_get_level())
     ob_end_flush();
 

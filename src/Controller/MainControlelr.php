@@ -53,9 +53,9 @@ class MainControlelr extends AbstractController
             }
         }
 
-//        $to = "info@digitalbazaar.ru";
+        $to = "info@digitalbazaar.ru";
 
-        $to = 'horodishtyanu@gmail.com';
+//        $to = 'horodishtyanu@gmail.com';
         $sendfrom = "noreply@digitalbazaar.ru";
         $headers  = "From: " . strip_tags($sendfrom) . "\r\n";
         $headers .= "Reply-To: ". strip_tags($sendfrom) . "\r\n";

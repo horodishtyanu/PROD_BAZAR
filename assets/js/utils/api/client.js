@@ -8,15 +8,16 @@ const ClientApi =  class ClientApi {
     }
 
     async checkToken(token) {
-        let resultToken = '';
+        let resultToken = {};
 
         try {
             let data = await superagent.post(this.url +'/checkToken')
                 .set(this.tokenHeaderKey, token)
                 .ok(res => res.status < 500);
 
-            if (data.status != 403) {
-                resultToken = data.body.data.AuthToken;
+            if (data.status !== 403) {
+                resultToken.token = data.body.data.AuthToken;
+                resultToken.isChoice = data.body.data.isChoice;
             }
         } catch (e) {
             console.log(e);
@@ -35,6 +36,42 @@ const ClientApi =  class ClientApi {
             }).ok(res => res.status < 500);
             if (data.status != 403) {
                 result.token = data.body.data.AuthToken;
+                result.isChoice = data.body.data.isChoice;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        return result;
+    }
+
+    async choice() {
+        let result = {
+            needAuth: false
+        };
+        try {
+            let data = await superagent.get(this.url + '/choice')
+                .set(this.tokenHeaderKey, Cookies.get('token'))
+                .ok(res => res.status < 500);
+            if (data.status === 403) {
+                result.needAuth = true;
+            }
+            result = data.body.data;
+        } catch (e) {
+            console.log(e);
+        }
+
+        return result;
+    }
+
+    async choisen(order_id, prods){
+        let result = {};
+
+        try {
+            let data = await superagent.post(this.url + '/selectProduct').send({order_id:order_id, prods:prods})
+                .ok(res => res.status < 500);
+            if (data.status !== 403) {
+                result = data.body;
             }
         } catch (e) {
             console.log(e);
@@ -52,7 +89,7 @@ const ClientApi =  class ClientApi {
             let data = await superagent.get(this.url + '/products')
                 .set(this.tokenHeaderKey, Cookies.get('token'))
                 .ok(res => res.status < 500);
-            if (data.status == 403) {
+            if (data.status === 403) {
                 result.needAuth = true;
             }
             result = data.body.data;
