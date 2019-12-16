@@ -27,15 +27,11 @@ class BunController extends AbstractController
      */
     public function indexAction(EntityManagerInterface $em):Response
     {
-        \CModule::IncludeModule('sale');
-        $res = \CIBlockElement::GetList([], ['IBLOCK_ID' => 31], false, false, false,false);
-        while ($r = $res->Fetch()){
-            $result[] = $r;
-        }
-        dd($result);
-        $qKey = $this->getDoctrine()->getRepository(QKey::class);
-        $key = $qKey->find(15);
-        return $this->json($key);
+        $orderId = new Order($em);
+//        $order = $orderId->getByProp(['CODE' => 'TOKEN', 'VALUE' => '123456789']);
+        $order = $orderId->getById(14925);
+        dd($order);
+        return $this->json($orderId->getOrder());
     }
 
     /**

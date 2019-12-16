@@ -6,7 +6,7 @@ import ClientApi from '../utils/api/client';
 
 const api = new ClientApi();
 
-const middleware = process.env.NODE_ENV == 'production'
+const middleware = process.env.NODE_ENV === 'production'
     ? applyMiddleware(thunk.withExtraArgument(api))
     : applyMiddleware(thunk.withExtraArgument(api), logger);
 

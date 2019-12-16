@@ -9,7 +9,7 @@ export function loginPost(authData) {
         dispatch(processLogin());
         api.auth(authData.code, authData.phone).then(res => {
             if (res.token) {
-                dispatch(login({isAuth: true, token: res.token}));
+                dispatch(login({isAuth: true, isChoice: res.isChoice, token: res.token}));
             } else {
                 dispatch(logout());
             }
@@ -19,9 +19,9 @@ export function loginPost(authData) {
 
 export function checkToken() {
     return (dispatch, getState, api ) => {
-        api.checkToken(getState().user.token).then(token => {
-            if (token) {
-                dispatch(login({isAuth: true, token: token}));
+        api.checkToken(getState().user.token).then(res => {
+            if (res.token) {
+                dispatch(login({isAuth: true, isChoice: res.isChoice, token: res.token}));
             } else {
                 dispatch(logout());
             }

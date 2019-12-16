@@ -46,10 +46,6 @@ class Auth extends React.Component {
     }
 
     parseCode(value) {
-        // if (!value) return value;
-        // const onlyNums = this.clearInt(value);
-        //
-        // return onlyNums.slice(0,2);
         return value.slice(0, 16);
 
     }
@@ -75,7 +71,7 @@ class Auth extends React.Component {
                 </div>
                 <div className="activation-title">Активация сервисного<br/> пакета</div>
                 <Form onSubmit={this.submitAuth.bind(this)}
-                      // initialValues={{ code: ['12','34','56','78'], phone: '7123123123' }}
+                      // initialValues={{ code: ['9ZupRiMhGxVdzebp'], phone: '79606846343' }}
                       validate={this.validate.bind(this)}
                       render={({ handleSubmit, form, submitting, pristine, values }) => (
                           <form onSubmit={handleSubmit} className="activation-inputs">
@@ -112,7 +108,7 @@ class Auth extends React.Component {
                               </div>
                               <div className="activation-submit-block">
                                   <button className="btn" type="submit" disabled={submitting || pristine}>
-                                      Активировать
+                                      Войти
                                   </button>
                               </div>
                           </form>

@@ -2,13 +2,16 @@
 
 namespace App\Bazar\ProductTokenBundle\Controller;
 
-use App\Bazar\ConnectDBBundle\Entity\Order\BSaleOrder;
 use App\Bazar\ConnectDBBundle\Entity\Order\BSaleOrderPropsValue;
-use App\Bazar\ConnectDBBundle\Entity\QKey;
-use App\Bazar\ConnectDBBundle\Helpers\Crypter;
-use App\Bazar\ConnectDBBundle\Helpers\Order;
-use Doctrine\ORM\EntityManager;
+use App\Bazar\ProductTokenBundle\Utils\Order;
+use App\Bazar\ProductTokenBundle\Utils\Crypter;
+use App\Bazar\ProductTokenBundle\Utils\ProductHelper;
+use CCatalogSku;
+use CIBlockElement;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use QSOFT\BackOffice\Export\Order\OrderException;
+use QSOFT\Distributor\Distributor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,51 +36,91 @@ class DefaultController extends AbstractController
      * @Route("/token/checkToken", name="checkToken")
      * @param Request $request
      * @param SessionInterface $session
+     * @param Order $order
      * @return JsonResponse
      */
-    public function checkToken(Request $request, SessionInterface $session)
+    public function checkToken(Request $request, SessionInterface $session, Order $order)
     {
+        $crypto = new Crypter($this->cryptoKey);
         if ($request->headers->get('AuthToken') != $session->get('authKey')) {
             return $this->json(['errors' => ['auth_error']], 403);
         }
-//        return $this->json(['errors' => ['auth_error']], 403);
+        $key = $request->headers->get('AuthToken');
+        $orderId = $crypto->decrypt($key);
+        $choice = $order->checkStatusChoice($orderId);
+        return $this->json(['data' => ['AuthToken' => $session->get('authKey'), 'isChoice' => $choice]]);
+    }
 
-        return $this->json(['data' => ['AuthToken' => $session->get('authKey')]]);
+    public function checkOrder(Request $request, SessionInterface $session)
+    {
+
     }
 
     /**
      * @Route("/token/auth", name="auth")
      * @param Request $request
-     * @param EntityManagerInterface $em
      * @param SessionInterface $session
+     * @param Order $order
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
-    public function auth(Request $request, EntityManagerInterface $em, SessionInterface $session)
+    public function auth(Request $request, SessionInterface $session, Order $order)
     {
         $requestData = json_decode($request->getContent(), true);
         $errors = [];
-        $orderClass = new Order($em);
-        $repoProps = $this->getDoctrine()->getRepository(BSaleOrderPropsValue::class);
-        $props = $repoProps->findBy(['code' => 'UNIQUE_KEYS_CODE', 'value' => $requestData['code']]);
-        foreach ($props as $prop){
-            $order = $orderClass->getByProp(['code' => 'PHONE', 'value' => $requestData['phone'], 'orderId' => $prop->getOrderId()]) ?: $orderClass->getByProp(['code' => 'PHONE', 'value' => $requestData['phone'], 'orderId' => $prop->getOrderId()]);
-        }
+        $data = [];
 
-        if (!$order){
+        if (!$order->checkAuthToken($requestData['code'], $requestData['phone'])){
+            $errors[] = 'Ошибка проверки токена';
             return $this->json(['errors' => $errors], 403);
         }
 
-        $crypter = new Crypter($this->cryptoKey);
-        $this->authKey = $crypter->encrypt($order->getId());
-        $data = ['AuthToken' => $this->authKey];
-        $session->set('authKey', $this->authKey);
+        try {
+            $saleOrder = $order->getSaleOrder();
+            $crypt = new Crypter($this->cryptoKey);
+            $this->authKey = $crypt->encrypt($saleOrder->getId());
+            $choice = $order->checkStatusChoice($saleOrder->getId());
+            $data = ['AuthToken' => $this->authKey, 'isChoice' => $choice];
+            $session->set('authKey', $this->authKey);
+        }catch (Exception $e){
+            $errors[] = $e->getMessage();
+        }
 
-        if (count($errors)) {
+        if ($errors) {
             return $this->json(['errors' => $errors], 403);
         }
 
         return $this->json(['data' => $data]);
+    }
+
+    /**
+     * @Route(path="/token/choice", name="choice")
+     * @param Request $request
+     * @param SessionInterface $session
+     * @return JsonResponse
+     */
+    public function choice(Request $request, SessionInterface $session):JsonResponse
+    {
+        $crypt = new Crypter($this->cryptoKey);
+        $key = $session->get('authKey');
+        if ($request->headers->get('AuthToken') != $key) {
+            return $this->json(['errors' => ['auth_error']], 403);
+        }
+        $orderId = $crypt->decrypt($key);
+        $data = ProductHelper::getProductsChoice($orderId);
+        return $this->json(['data' => $data]);
+    }
+
+    /**
+     * @Route(path="/token/selectProduct", methods={"POST"}, name="choiceLoad")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function selectProduct(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = ProductHelper::setProductChoice($data['order_id'], $data['prods']);
+        return $this->json(['result' => $result]);
     }
 
     /**
@@ -91,40 +134,11 @@ class DefaultController extends AbstractController
     {
         $crypt = new Crypter($this->cryptoKey);
         $key = $session->get('authKey');
-        $orderId = $crypt->decrypt($key);
-        $obOrder = new \QSOFT\Distributor\Order($orderId);
-
-        $dbKey = \QSOFT\Distributor\DistributorNew::getKeys(['order_id' => $orderId], [], true);
-        while ($arKey = $dbKey->Fetch())
-        {
-            $product = \CIBlockElement::GetList(false, ['IBLOCK_ID' => 31, 'ID' => \CCatalogSKU::getProductList([$arKey['product_id']])[$arKey['product_id']]['ID']], false, false,['PROPERTY_TRIAL','DOWNLOAD_LINK', 'NAME', 'PREVIEW_TEXT'])->fetch();
-            $item = $obOrder->getItemById($arKey['product_id']);
-            $arKey['down_link'] = $item->getDownloadLink();
-            $arKey['name'] = $product['NAME'];
-
-            if ($product['PROPERTY_TRIAL_VALUE'] == 'Y'){
-                $arKey['key'] = $arKey['name'];
-                $arKey['name'] = $product['PREVIEW_TEXT'];
-
-            }
-
-            $items[] = $arKey;
-        }
         if ($request->headers->get('AuthToken') != $key) {
             return $this->json(['errors' => ['auth_error']], 403);
         }
-
-        $data = [
-            'order' => $obOrder->getId(),
-        ];
-        foreach ($items as $item){
-            $data['items'][] = [
-                'order' => $item['key'],
-                'link' => $item['down_link'],
-                'name' => $item['name']
-            ];
-        }
-
+        $orderId = $crypt->decrypt($key);
+        $data = ProductHelper::getProducts($orderId);
         return $this->json(['data' => $data]);
     }
 }
