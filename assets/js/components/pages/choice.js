@@ -16,10 +16,10 @@ class Choice extends React.Component {
 
 
     render() {
-        const {items, order_id} = this.props;
+        const {items, product_name} = this.props;
         return (
             <React.Fragment>
-                <div className="activation-title">Выберите программы {order_id}</div>
+                <div className="activation-title">Вы купили <b>"{product_name}"</b> <br/> Выберите нужный продукт</div>
                 <div className="activation-widget">
                     <Form
                         onSubmit={this.submitChoice.bind(this)}

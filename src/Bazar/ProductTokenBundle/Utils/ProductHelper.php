@@ -48,6 +48,8 @@ class ProductHelper
         $order = \Bitrix\Sale\Order::load($orderId);
         $basket = $order->getBasket();
         $items = $basket->getBasketItems();
+        $productName = '';
+        /**@var $item BasketItem**/
         foreach ($items as $item){
             $set = new Set($item->getProductId());
             if ($set->isItemSet()) {
@@ -60,8 +62,10 @@ class ProductHelper
 
                     $i++;
                 }
+                $productName = $item->getField('NAME');
             }
         }
+        $data['product_name'] = $productName;
         $data['order_id'] = $order->getId();
         $data['items'] = $arResult;
         return $data;
@@ -73,17 +77,30 @@ class ProductHelper
      */
     public static function getProducts($orderId)
     {
+
+        $order = \Bitrix\Sale\Order::load($orderId);
+        $basket = $order->getBasket();
+        $prods = $basket->getBasketItems();
+
+        /**
+         * @var $firstItem BasketItem;
+        **/
+        $firstItem = $prods[0];
+
+        $productName = $firstItem->getField('NAME');
+
         $dbKey = Distributor::getKeys(['order_id' => $orderId], [], true);
         while ($arKey = $dbKey->Fetch())
         {
-            $productID = \CCatalogSku::getProductList([$arKey['product_id']])[$arKey['product_id']]['ID'];
-            $product = \CIBlockElement::GetList(false, ['IBLOCK_ID' => 31, 'ID' => $productID], false, false,['PROPERTY_TRIAL','PROPERTY_DOWNLOAD_LINK', 'NAME', 'PREVIEW_TEXT'])->fetch();
+            $productID = CCatalogSku::getProductList([$arKey['product_id']]);
+            $productID = $productID[$arKey['product_id']]['ID'];
+            $product = CIBlockElement::GetList(false, ['IBLOCK_ID' => 31, 'ID' => $productID], false, false,['PROPERTY_TRIAL','PROPERTY_DOWNLOAD_LINK', 'NAME', 'PREVIEW_TEXT'])->fetch();
             $arKey['down_link'] = $product['PROPERTY_DOWNLOAD_LINK_VALUE'];
             $arKey['name'] = $product['NAME'];
 
             if ($product['PROPERTY_TRIAL_VALUE'] == 'Y'){
-                $arKey['key'] = $arKey['name'];
-                $arKey['name'] = $product['PREVIEW_TEXT'];
+                $arKey['preview_text'] = $product['PREVIEW_TEXT'];
+                $arKey['key'] = null;
             }
 
             $items[] = $arKey;
@@ -93,11 +110,13 @@ class ProductHelper
         ];
         foreach ($items as $item){
             $data['items'][] = [
-                'order' => $item['key'],
+                'key' => $item['key'],
                 'link' => $item['down_link'],
-                'name' => $item['name']
+                'name' => $item['name'],
+                'preview_text' => $item['preview_text']
             ];
         }
+        $data['product_name'] = $productName;
         return $data;
     }
 }

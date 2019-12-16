@@ -1,4 +1,5 @@
 import React from 'react';
+import Parser from 'html-react-parser';
 
 class Products extends React.Component{
 
@@ -7,10 +8,10 @@ class Products extends React.Component{
     }
 
     render() {
-        const {items, order} = this.props;
+        const {items, order, product_name} = this.props;
         return (
             <React.Fragment>
-                <div className="activation-title">Активация завершена успешно</div>
+                <div className="activation-title">Вы успешно активировали комплект <br/> <b>{product_name}</b></div>
                 <div className="activation-order-number">Номер заказа&nbsp; <span>{order}</span></div>
                 <div className="activation-links-title">Ключи для активации продуктов и ссылки на скачивание:</div>
                 <div className="activation-widget">
@@ -18,9 +19,16 @@ class Products extends React.Component{
                         items.map((item, key) =>
                             <div key={key} className="activation-widget-block">
                                 <div className="activation-download">
-                                    <div className="activation-download__key">{item.order}</div>
+                                    <div className="activation-download__key">{item.name}</div>
                                     <div className="activation-download__body">
-                                        <div className="activation-download__title" dangerouslySetInnerHTML={{ __html: item.name }} />
+                                        {item.key !== null &&
+                                        <div className="activation-download__title">
+                                            Ключ активации: <b>{Parser(item.key)}</b>
+                                        </div>}
+                                        {item.preview_text !== null &&
+                                        <div className="activation-download__title">
+                                            {Parser(item.preview_text)}
+                                        </div>}
                                         {item.link !== null &&
                                         <a href={item.link} target="_blank" className="activation-download__link">
                                             <svg width="40" height="14" viewBox="0 0 40 15">

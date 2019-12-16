@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="fbeeb5e4-fcce-4dc4-adb3-be2adb3ed2b3" name="BAZAR_PROD" url="http://gw.s-online.ru">
-        <fileTransfer host="gw.s-online.ru" port="1419" privateKey="C:\Users\Alexander\Desktop\ESET\keys\id_rsa.ppk" accessType="SFTP" keyPair="true">
+        <fileTransfer host="gw.s-online.ru" port="1419" privateKey="C:\Users\ahorodishtyanu\Desktop\ESET\keys\id_rsa.ppk" accessType="SFTP" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

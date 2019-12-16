@@ -69,7 +69,7 @@ class Auth extends React.Component {
                 <div className="activation-logo">
                     <img src="img/logo.svg" alt=""/>
                 </div>
-                <div className="activation-title">Активация сервисного<br/> пакета</div>
+                <div className="activation-title">Активация продукта</div>
                 <Form onSubmit={this.submitAuth.bind(this)}
                       // initialValues={{ code: ['9ZupRiMhGxVdzebp'], phone: '79606846343' }}
                       validate={this.validate.bind(this)}
