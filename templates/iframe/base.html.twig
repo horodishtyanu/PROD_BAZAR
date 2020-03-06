@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('landing/build/img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landing/build/img/favicon-16x16.png') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>{% block title %}Frame!{% endblock %}</title>
+</head>
+<body
+style="height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;">
+
+<div class="activation">
+    <div class="container" id="root">
+        {% block body %}
+            <div class="form-group" style="max-width: 360px; margin: 0 auto;">
+                <input type="text" class="form-control" name="phone" id="phone" aria-describedby="helpId" placeholder="Введите телефон клиента">
+                <input type="hidden" value="{{params.offerId}}" id="offerId" name="offerId" />
+                <input type="hidden" value="{{params.userId}}" id="userId" name="userId" />
+                <button type="button" onClick="sendData()" class="btn btn-primary" style="width: 100%;margin-top: 15px;">Отправить</button>
+            </div>
+        {% endblock %}
+    </div>
+</div>
+{% block javascripts %}
+<script>
+function sendData() {
+    let params = {};
+    params.phone = document.getElementById('phone').value;
+    params.offerId = document.getElementById('offerId').value;
+    params.userId = document.getElementById('userId').value;
+    let url = location.protocol + '//' + location.host + location.pathname;
+
+    $.ajax({
+        type:"POST",
+        url:url,
+        dataType: "json",
+        data: params,
+        success:function (data) {
+            loadData(data);
+        }
+    });
+}
+function loadData(data) {
+    window.parent.postMessage(data, "*");
+}
+
+</script>
+{% endblock %}
+</body>
+</html>

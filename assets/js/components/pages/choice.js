@@ -19,7 +19,7 @@ class Choice extends React.Component {
         const {items, product_name} = this.props;
         return (
             <React.Fragment>
-                <div className="activation-title">Вы купили <b>"{product_name}"</b> <br/> Выберите нужный продукт</div>
+                <div className="activation-title">Вы купили комплект <b>"{product_name}"</b> <br/> Выберите нужный продукт</div>
                 <div className="activation-widget">
                     <Form
                         onSubmit={this.submitChoice.bind(this)}
