@@ -94,14 +94,18 @@ class ProductHelper
         {
             $productID = CCatalogSku::getProductList([$arKey['product_id']]);
             $productID = $productID[$arKey['product_id']]['ID'];
-            $product = CIBlockElement::GetList(false, ['IBLOCK_ID' => 31, 'ID' => $productID], false, false,['PROPERTY_TRIAL','PROPERTY_DOWNLOAD_LINK', 'NAME', 'PREVIEW_TEXT'])->fetch();
+            $product = CIBlockElement::GetList(false, ['IBLOCK_ID' => 31, 'ID' => $productID], false, false,['PROPERTY_TRIAL','PROPERTY_DOWNLOAD_LINK','PROPERTY_DISTRIBUTOR', 'NAME', 'PREVIEW_TEXT'])->fetch();
             $arKey['down_link'] = $product['PROPERTY_DOWNLOAD_LINK_VALUE'];
             $arKey['name'] = $product['NAME'];
+            $distID = $product['PROPERTY_DISTRIBUTOR_VALUE'];
 
             if ($product['PROPERTY_TRIAL_VALUE'] == 'Y'){
                 $arKey['preview_text'] = $product['PREVIEW_TEXT'];
                 $arKey['key'] = null;
             }
+
+            if ($distID == '7814665871' && $arKey['down_link'] !== '')
+                $arKey['down_link'] = $product['PROPERTY_DOWNLOAD_LINK_VALUE'].$arKey['key'];
 
             $items[] = $arKey;
         }
@@ -110,6 +114,7 @@ class ProductHelper
         ];
         foreach ($items as $item){
             $data['items'][] = [
+                'id' => $item['id'],
                 'key' => $item['key'],
                 'link' => $item['down_link'],
                 'name' => $item['name'],

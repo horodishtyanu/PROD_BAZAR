@@ -54,6 +54,6 @@ class FrameController extends AbstractController
         $rostele = new RostelePaymentService($params['offerId'], $params['phone'], $params['userId']);
         $result = $rostele->makeOrder();
 
-        return $this->json($result);
+        return $this->json(json_encode($result));
     }
 }

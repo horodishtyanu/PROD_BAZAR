@@ -20,38 +20,91 @@ justify-content: center;">
     <div class="container" id="root">
         {% block body %}
             <div class="form-group" style="max-width: 360px; margin: 0 auto;">
-                <input type="text" class="form-control" name="phone" id="phone" aria-describedby="helpId" placeholder="Введите телефон клиента">
-                <input type="hidden" value="{{params.offerId}}" id="offerId" name="offerId" />
-                <input type="hidden" value="{{params.userId}}" id="userId" name="userId" />
-                <button type="button" onClick="sendData()" class="btn btn-primary" style="width: 100%;margin-top: 15px;">Отправить</button>
+                <form id="form" type="POST">
+                    <input type="tel" class="form-control" name="phone" id="phone" aria-describedby="helpId" placeholder="+7 (___) - ___ - __ - __">
+                    <input type="hidden" value="{{params.offerId}}" id="offerId" name="offerId" />
+                    <input type="hidden" value="{{params.userId}}" id="userId" name="userId" />
+                    <button type="submit" id="formBut"  class="btn btn-primary" style="width: 100%;margin-top: 15px;">Отправить</button>
+                </form>
             </div>
         {% endblock %}
     </div>
 </div>
 {% block javascripts %}
-<script>
-function sendData() {
-    let params = {};
-    params.phone = document.getElementById('phone').value;
-    params.offerId = document.getElementById('offerId').value;
-    params.userId = document.getElementById('userId').value;
-    let url = location.protocol + '//' + location.host + location.pathname;
+    <script>
+        $('#form').on('submit', function (e) {
+            e.preventDefault();
+            let button = document.getElementById('formBut');
+            let params = {};
+            let len = (clearInt(document.getElementById('phone').value)).length;
+            if (len < 11) {
+                alert("Ошибка в номере телефона!");
+                return false;
+            }
+            params.phone = clearInt(document.getElementById('phone').value);
+            params.offerId = document.getElementById('offerId').value;
+            params.userId = document.getElementById('userId').value;
+            let url = location.protocol + '//' + location.host + location.pathname;
+            button.disabled = true;
+            $.ajax({
+                type:"POST",
+                url:url,
+                dataType: "json",
+                data: params,
+                success:function (data) {
+                    button.disabled = false;
+                    loadData(data);
+                },
+                error: function (jqXHR) {
+                    button.disabled = false;
+                    console.log(jqXHR.responseText);
+                    alert("Ошибка выполнения запроса!")
+                }
+            });
+        });
 
-    $.ajax({
-        type:"POST",
-        url:url,
-        dataType: "json",
-        data: params,
-        success:function (data) {
-            loadData(data);
+        let loadData = function (data) {
+            window.parent.postMessage(data, "*");
+        };
+
+        const input = document.getElementById('phone');
+        input.addEventListener('input', formatPhone);
+        function formatPhone(e) {
+            let value = e.target.value;
+            if (!value) return value;
+            const pattern = '+7 (___) - ___ - __ - __';
+            let result = '';
+
+            let j = 0;
+            for (let i = 0; i < pattern.length; i++) {
+                let iNum = value.slice(j, j + 1);
+                let iPatt = pattern.slice(i, i + 1);
+                if (iPatt == '_' || iPatt == iNum ) {
+                    iPatt = iNum;
+                    j++;
+                } else if(i == 1 && iPatt == '7' && iNum == '8' ) {
+                    j++;
+                }
+                result += iPatt;
+                if (j >= value.length) {
+                    break;
+                }
+            }
+            $("#phone").val(result);
+            // return result;
         }
-    });
-}
-function loadData(data) {
-    window.parent.postMessage(data, "*");
-}
 
-</script>
+        $("#phone").on('focus', function () {
+            if (this.value === '')
+            {
+                this.value = '+7 (';
+            }
+        });
+        function clearInt(phone) {
+            return phone.replace(/[^\d]/g, "");
+        }
+
+    </script>
 {% endblock %}
 </body>
 </html>

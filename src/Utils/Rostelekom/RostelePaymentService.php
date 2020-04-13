@@ -27,8 +27,8 @@ class RostelePaymentService
      * @var string
      */
     protected $retailerId = '7840306212',
-        $paySystemId = 35,
-        $secondPaySystemId = 36;
+        $paySystemId = 37,
+        $secondPaySystemId = 38;
     /**
      * @var bool
      */
@@ -77,7 +77,7 @@ class RostelePaymentService
             "key"     => $key,
             "orderid" => $this->orderId
         ];
-        $resp['chequeText'] = $chequeText;
+        $resp['chequeText'] = str_replace("¶", PHP_EOL, $chequeText);
         $resp['status'] = 0;
         $resp['cost'] = $this->getPrice();
 
