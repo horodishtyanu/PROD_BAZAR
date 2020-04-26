@@ -7,10 +7,12 @@ namespace App\Utils\Rostelekom;
 use Exception;
 use QSOFT\BackOffice\Export\Order\OrderException;
 use QSOFT\Distributor\Distributor;
+use QSOFT\Distributor\DistributorNotice;
 use QSOFT\Distributor\Order;
 use QSOFT\Payment\Payment;
 use QSOFT\Payment\PaymentException;
 use QSOFT\Tools\Product;
+use QSOFT\ServiceNotice\Service\Sms;
 
 class RostelePaymentService
 {
@@ -73,9 +75,8 @@ class RostelePaymentService
 
         $resp = [];
         $resp['attributes'] = [
-            "inphone" => $this->phone,
-            "key"     => $key,
-            "orderid" => $this->orderId
+            ["inphone" => $this->phone],
+            ["orderid" => $this->orderId]
         ];
         $resp['chequeText'] = str_replace("¶", PHP_EOL, $chequeText);
         $resp['status'] = 0;
@@ -94,6 +95,58 @@ class RostelePaymentService
             dd($e->getMessage());
         }
         return $price;
+    }
+
+    public static function abandonPayment($orderId)
+    {
+        global $DB;
+        if (!($DB->Query("delete from b_sale_order_payment where ORDER_ID in ('{$orderId}')")->result))
+            return "Не найдена оплата по заказу";
+
+        if(!($DB->Query("update b_sale_order set PAYED = 'N', SUM_PAID=0, CANCELED='Y' where ID in ('{$orderId}')")->result))
+            return "Ошибка при изменении заказа";
+
+        if(!($DB->Query("update q_key set order_id = null, status=0 where order_id in ('{$orderId}')")->result))
+            return "Не найдены ключи по заказу";
+
+        return true;
+    }
+
+    public static function sendKeysBySMS($orderId)
+    {
+        global $DB;
+
+        if (!$orderId = (int)$orderId)
+        {
+            return false;
+        }
+
+        $obOrder = new Order($orderId);
+        $arOrderProps = $obOrder->getOrderProp();
+        $obNotice = new DistributorNotice;
+
+        $arAllKeys = array();
+        $dbKey = Distributor::getKeys(array('order_id' => $orderId), array(), true);
+
+        while ($arKey = $dbKey->Fetch())
+        {
+            $arAllKeys[ $arKey['product_id'] ][ $arKey['index'] ][ $arKey['type'] ] = $arKey['key'];
+        }
+        foreach ($arAllKeys as $productId => $arProductKeys)
+        {
+            $item = $obOrder->getItemById($productId);
+            $distProp = Distributor::getDistributorProp($item->getDistributor());
+            $distributor = Distributor::getObjectByDistributor($distProp['HANDLER'], $distProp['XML_ID'], $obOrder->getRetailer());
+            $distributor->setDistProp($distProp);
+
+            foreach ($arProductKeys as $index => $arKeys)
+            {
+                $obNotice->addService(new Sms($arOrderProps['PHONE'], 'SMS' . $productId . $index, $distributor->getAlertTemplate('SMS', $arOrderProps['LID'])));
+            }
+        }
+
+        $arFields = $obNotice->getFieldsForKeys($obOrder, $arAllKeys);
+        return (bool)$obNotice->send($arFields);
     }
 
     /**
