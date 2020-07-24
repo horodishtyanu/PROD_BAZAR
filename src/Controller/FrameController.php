@@ -5,12 +5,16 @@ namespace App\Controller;
 
 
 use App\Utils\Rostelekom\RostelePaymentService;
+use QSOFT\BackOffice\Export\Order\OrderException;
+use QSOFT\Distributor\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 class FrameController extends AbstractController
 {
@@ -54,6 +58,95 @@ class FrameController extends AbstractController
         $rostele = new RostelePaymentService($params['offerId'], $params['phone'], $params['userId']);
         $result = $rostele->makeOrder();
 
-        return $this->json($result);
+        return $this->json(json_encode($result));
+    }
+
+    /**
+     * @Route(path="/api/frame/order", methods={"POST"}, name="releaseOrder")
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function releaseOrder(Request $request)
+    {
+//        return $this->json([
+//            'reqStatus' => -1,
+//            'reqNote'   => 'method disabled'
+//        ]);
+        $data = json_decode($request->getContent(), true);
+        $date = new \DateTime();
+        $reqOrderId = '';
+        if ($data['reqType'] == 'createPayment') {
+            foreach ($data['payParamList'] as $item) {
+                if (mb_strtolower($item['path']) == 'orderid') {
+                    $reqOrderId = $item['value'];
+                }
+            }
+        }else{
+            $reqOrderId = $data['esppPayId'];
+        }
+        if ($reqOrderId == ''){
+            return $this->json([
+                'reqStatus' => -1,
+                'reqNote'   => 'Empty ORDERID'
+            ]);
+        }
+
+        try {
+            $order = new Order($reqOrderId);
+            $orderId = $order->getId();
+        } catch (OrderException $exception) {
+            return $this->json([
+                'reqStatus' => -1,
+                'reqNote'   => $exception->getMessage()
+            ]);
+        }
+
+        if ($order->getRetailer()->SITE_ID !== 'rt') {
+            return $this->json([
+                'reqStatus' => -1,
+                'reqNote'   => "Заказ не найден у данного ретейлера!"
+            ]);
+        }
+
+        if ($data['reqType'] == 'createPayment' && $orderId) {
+            try {
+                $result = RostelePaymentService::sendKeysBySMS($orderId);
+            } catch (\Exception $exception) {
+                return $this->json([
+                    'reqStatus' => -1,
+                    'reqNote'   => $exception->getMessage()
+                ]);
+            }
+            return $this->json([
+                'reqStatus'  => 0,
+                "dstPayId"   => $orderId,
+                "payStatus"  => 3,
+                "statusTime" => $date->format('Y-m-d\TH:i:sP')
+            ]);
+        } elseif ($data['reqType'] == 'abandonPayment' && $orderId) {
+            $result = RostelePaymentService::abandonPayment($orderId);
+            if ($result !== true) {
+                return $this->json([
+                    'reqStatus' => -1,
+                    'reqNote'   => $result
+                ]);
+            } else {
+                return $this->json([
+                    'reqStatus'        => 0,
+                    "payStatus"        => 3,
+                    "dstPayId"         => $orderId,
+                    "statusTime"       => $date->format('Y-m-d\TH:i:sP'),
+                    "abandonReason"    => 1,
+                    "abandonInitiator" => 1
+                ]);
+            }
+        } else {
+            return $this->json([
+                'reqStatus' => -1,
+                'reqNote'   => "Ошибка исполнения запроса!"
+            ]);
+        }
+
     }
 }
