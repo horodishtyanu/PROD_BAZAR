@@ -27,6 +27,7 @@ class Choice extends React.Component {
                               <form onSubmit={this.submitChoice.bind(this)} className="activation-inputs">
                                   <div className="activation-widget-block">
                                       {
+
                                           Object.keys(items).map((key) =>
                                               <div className="activation-radios">
                                                   <div className="activation-radios__title">{items[key].SECTION_NAME}</div>
@@ -34,7 +35,7 @@ class Choice extends React.Component {
                                                       {
                                                           items[key].ITEMS.map((item) =>
                                                               <li>
-                                                                  <div className="radio-block">
+                                                                  <div className="radio-block" data-info={'l_' + items[key].ITEMS.length}>
                                                                       <Field
                                                                           className="radio"
                                                                           name={'it' + item.IBLOCK_SECTION_ID}
@@ -42,7 +43,7 @@ class Choice extends React.Component {
                                                                           id={'radio-id-' + item.ID}
                                                                           value={item.ID}
                                                                           component="input"
-                                                                          checked={this.value}
+                                                                          checked={items[key].ITEMS.length === 1}
                                                                           onChange={this.onChange}
                                                                       />
                                                                       <label htmlFor={'radio-id-' + item.ID} className="radio-label">
