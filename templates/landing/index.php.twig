@@ -1,195 +1,269 @@
-<!DOCTYPE HTML>
-<html lang="ru-RU">
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE"/>
-    <meta name="format-detection" content="telephone=no"/>
-
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('landing/build/img/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landing/build/img/favicon-16x16.png') }}">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
-    <!-- Google Tag Manager -->
-
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-
-    })(window,document,'script','dataLayer','GTM-5X3HQFC');</script>
-
-    <!-- End Google Tag Manager -->
-
-    <title>Цифровой базар - дистрибьютор цифрового контента</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-    <link href="{{ asset('landing/build/css/main.css') }}" type="text/css" rel="stylesheet">
-
-
-
-</head>
-<body>
-{% block body %}
-
-    {% block javascripts %}
-        <script src="{{ asset('landing/build/js/modernizr.js') }}"></script>
+    <title>Цифровой базар</title>
+    {% block stylesheets %}
+        <link href="{{ asset('landing/css/styles.css') }}" type="text/css" rel="stylesheet" />
     {% endblock %}
-<a id="top" name="top"></a>
-<header id="header" class="header">
-    <div class="header-panel">
-        <div class="container-fluid">
 
-            <nav class="main-menu d-none d-xl-block order-xl-2">
-                <ul class="main-menu__list ">
-                    <li class="main-menu__item">
-                        <a href="#about" class="main-menu__link js-anchor"><span>О нас</span></a>
-                    </li>
+    {% block javascript_header %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="{{ asset('landing/js/scripts.js') }}"></script>
+    {% endblock %}
+</head>
 
-                    <li class="main-menu__item">
-                        <a href="#advantages" class="main-menu__link js-anchor"><span>Чем мы лучше</span></a>
-                    </li>
+{{ header | raw }}
 
-                    <li class="main-menu__item">
-                        <a href="#packages" class="main-menu__link js-anchor"><span>Наши продукты</span></a>
-                    </li>
-
-                    <li class="main-menu__item">
-                        <a href="#contacts" class="main-menu__link js-anchor"><span>Стать партнером</span></a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="header-panel-right order-xl-3">
-
-                <div class="header-panel-right__action d-none d-xl-inline-block">
-                    <a href="#contacts-form" class="btn btn-white js-anchor">Связаться с нами</a>
-                </div>
-
-                <div class="header-panel-right__burger d-inline-block d-xl-none">
-                    <a
-                            href="javascript:"
-                            data-target="#menu-mobile"
-                            class="menu-icon collapsed"
-                            data-toggle="collapse"
-                            aria-expanded="false"
-                            aria-controls="menu-mobile"
-                    >=</a>
-                </div>
-            </div>
-
-            <div class="logo order-xl-1">
-                <img src="{{ asset('landing/build/img/logo.svg') }}"
-                     data-logo="{{ asset('landing/build/img/logo.svg') }}"
-                     data-logo-white="{{ asset('landing/build/img/logo.svg') }}">
-            </div>
-
-        </div>
-    </div>
-
-    <div id="menu-mobile" class="menu-mobile collapse" >
-        <div class="menu-mobile__inner">
-
-            <nav class="mobile-menu">
-                <ul class="mobile-menu__list ">
-                    <li class="mobile-menu__item">
-                        <a href="#about" class="mobile-menu__link js-anchor"><span>О нас</span></a>
-                    </li>
-
-                    <li class="mobile-menu__item">
-                        <a href="#advantages" class="mobile-menu__link js-anchor"><span>Чем мы лучше</span></a>
-                    </li>
-
-                    <li class="mobile-menu__item">
-                        <a href="#packages" class="mobile-menu__link js-anchor"><span>Наши продукты</span></a>
-                    </li>
-
-                    <li class="mobile-menu__item">
-                        <a href="#contacts" class="mobile-menu__link js-anchor"><span>Стать партнером</span></a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-
-    </div>
-</header>
-<div class="page">
-    {% include 'landing/include/masthead.php.twig' %}
-    {% include 'landing/include/about.php.twig' %}
-    {% include 'landing/include/advantages.php.twig' %}
-    {% include 'landing/include/packages.php.twig' %}
-    {% include 'landing/include/contacts.php.twig' %}
-</div>
-
-<footer class="footer">
+<div class="index-promo">
     <div class="container">
-        <div class="row align-items-sm-start">
-
-            <div class="col-lg-2 col-xl-1">
-                <div class="footer-logo">
-                    <img src="{{ asset('landing/build/img/logo-w.svg') }}" alt="">
+        <div class="index-promo-body">
+            <div class="index-promo-content">
+                <h1 class="index-promo-title">Колорит цифрового мира</h1>
+                <div class="index-promo-desc">Софт. Развлечения. Сервисы</div>
+                <a href="#contact" class="index-promo-btn btn">Подробнее</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="index-section index-about">
+    <div class="container">
+        <div class="index-about-body">
+            <div class="index-about-content">
+                <div class="index-title">О нас</div>
+                <div class="index-about-desc"><b>Цифровой Базар</b> – дистрибьютор цифрового контента (различных услуг, программного обеспечения, подписок) с помощью облачной платформы - легкой в настройке, быстрой в интеграции и простой в управлении.</div>
+            </div>
+            <div class="index-about-info">
+                <div class="index-about-info-text">Мы предлагаем <b>готовое цифровое решение</b> для компаний с любой инфраструктурой из любой отрасли бизнеса.</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="index-section index-advantages">
+    <div class="container">
+        <div class="index-advantages-body">
+            <div class="index-advantages-img">
+                <img src="{{ asset('landing/build/img/advantages-bg-3.svg') }}" alt="">
+            </div>
+            <div class="index-advantages-content">
+                <div class="index-title">Чем мы лучше</div>
+                <div class="index-advantages-row flex-row">
+                    <div class="index-advantages-col flex-row-item">
+                        <div class="index-advantage-title">Гибкость и масштабируемость</div>
+                        <div class="index-advantage-desc">Адаптивность платформы к любой инфраструктуре. Мы предоставим удобный способ продажи электронных ключей, подписок и сервисов для розничных сетей, операторов связи, интернет-магазинов.</div>
+                    </div>
+                    <div class="index-advantages-col flex-row-item">
+                        <div class="index-advantage-title">Интеграция</div>
+                        <div class="index-advantage-desc">Мы предоставляем возможность интеграции не только классических точек продаж, но и интернет-магазинов, биллинговых систем, личных кабинетов, а также программ лояльности наших клиентов.</div>
+                    </div>
+                    <div class="index-advantages-col flex-row-item">
+                        <div class="index-advantage-title">Развитие бизнеса</div>
+                        <div class="index-advantage-desc">Мы готовы помочь с готовыми решениями, оптимальными для вашего бизнеса - пакеты услуг, продуктов, различные бандлы, тарифы и многое другое.</div>
+                    </div>
+                    <div class="index-advantages-col flex-row-item">
+                        <div class="index-advantage-title">Продвижение</div>
+                        <div class="index-advantage-desc">Мы предложим эффективные способы продвижения продуктов, оформления мест продаж, мерчендайзинга. Также, мы организуем онлайн обучения продавцов и предоставляем программы мотивации (по согласованию с нашими клиентами).</div>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-lg-6 col-xl-8">
-                <div class="footer-nav">
-                    <nav class="main-menu">
-                        <ul class="main-menu__list ">
-                            <li class="main-menu__item">
-                                <a href="#about" class="main-menu__link js-anchor"><span>О нас</span></a>
-                            </li>
-
-                            <li class="main-menu__item">
-                                <a href="#advantages" class="main-menu__link js-anchor"><span>Чем мы лучше</span></a>
-                            </li>
-
-                            <li class="main-menu__item">
-                                <a href="#packages" class="main-menu__link js-anchor"><span>Наши продукты</span></a>
-                            </li>
-
-                            <li class="main-menu__item">
-                                <a href="#contacts" class="main-menu__link js-anchor"><span>Стать партнером</span></a>
+        </div>
+    </div>
+</div>
+<div class="index-section index-products">
+    <div class="container">
+        <div class="index-title">Наши продукты</div>
+        <div class="index-products-row flex-row">
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_games.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Игры</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Игры</div>
+                        <ul class="index-product-info-list">
+                            <li>Игры для PC
+                            <li>Игры для консолей/приставок
+                            <li>Мобильные игры
+                            <li>Игровая валюта и подписки
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_soft.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Программное обеспечение</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Программное обеспечение</div>
+                        <ul class="index-product-info-list">
+                            <li>Операционные системы
+                            <li>Офисные приложения
+                            <li>Антивирусы
+                            <li>Видеоредакторы
+                            <li>Словари и переводчики
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_media.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Мультимедиа</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Мультимедиа</div>
+                        <ul class="index-product-info-list">
+                            <li>Онлайн кинотеатры
+                            <li>Онлайн музыка
+                            <li>Электронные книги
+                            <li>Аудиокниги
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_education.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Обучение</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Обучение</div>
+                        <ul class="index-product-info-list">
+                            <li>Изучение иностранных языков
+                            <li>Обучение вождению
+                            <li>Спортивные курсы
+                            <li>Курсы университетов
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_gift_cards.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Подарочные<br> карты</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Подарочные<br> карты</div>
+                        <ul class="index-product-info-list">
+                            <li>Магазины бытовой техники
+                            <li>Доставки продуктов питания из магазинов
+                            <li>Салоны красоты
+                            <li>Путешествия
+                            <li>Рестораны и кафе
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_service.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Сервисы</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Сервисы</div>
+                        <ul class="index-product-info-list">
+                            <li>Персональная ИТ служба
+                            <li>Доставка продуктов с рецептами
+                            <li>Службы Такси
+                            <li>Каршеринг
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_insurance.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Страховки</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Страховки</div>
+                        <ul class="index-product-info-list">
+                            <li>Страхование экрана мобильного устройства
+                            <li>Защита покупки
+                            <li>Страхование для путешественников
+                            <li>Страхование имущества и здоровья
+                            <li>Мигрантский ДМС
+                        </ul>
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
+                    </div>
+                </div>
+            </div>
+            <div class="index-products-col flex-row-item">
+                <div class="index-product">
+                    <div class="index-product-icon">
+                        <img src="landing/build/img/package_health.svg" alt="">
+                    </div>
+                    <div class="index-product-title">Здоровье</div>
+                    <div class="index-product-info">
+                        <div class="index-product-title">Здоровье</div>
+                        <ul class="index-product-info-list">
+                            <li>
+                                Телемедицина:
+                                <ul>
+                                    <li>Терапевт
+                                    <li>Педиатр
+                                    <li>Диетолог
+                                    <li>Косметолог
+                                </ul>
                             </li>
                         </ul>
-                    </nav>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-xl-3">
-                <div class="footer-contacts">
-                    <div class="footer-contacts__address">
-                        115088, г. Москва,
-                        <span>ул. Южнопортовая, д.5, стр. 1</span>
-                    </div>
-                    <div class="footer-contacts__email">
-                        info@digitalbazaar.ru
-                    </div>
-                    <div class="footer-contacts__copyright">
-                        (C) Digital bazaar {{ dt }}
+                        <a href="#contact" class="index-product-btn btn btn-block">Узнать цены</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</footer>
-    {% block javascript_footer %}
-        <script src="{{ asset('landing/build/js/main.js') }}"></script>
-    {% endblock %}
-{% endblock %}
+</div>
+<div class="index-section index-form" id="contact">
+    <div class="container">
+        <div class="index-form-body">
+            <div class="index-form-img">
+                <img src="/landing/build/img/contacts-bg.svg" alt="">
+            </div>
+            <form id="contacts-form" method="POST" class="index-form-content">
+                <div class="index-title">Связаться с нами</div>
+                <div class="index-form-desc">Хотите стать партнером, нужна дополнительная информация или у Вас есть предложение?</div>
+                <label class="form-block">
+                    <input type="text" class="index-form-input" name="name" id="formName" placeholder="Имя*" required>
+                </label>
+                <label class="form-block">
+                    <input type="email" class="index-form-input" name="email" id="formEmail" placeholder="Email*" required>
+                </label>
+                <label class="form-block">
+                    <input type="tel" class="index-form-input" name="phone" id="formPhone" placeholder="+7 (495) 123-45-67">
+                </label>
+                <label class="form-block">
+                    <input type="text" class="index-form-input" name="question" id="formQuestion" placeholder="Тема обращения">
+                </label>
+                <div class="index-form-submit">
+                    <div class="index-form-info">* Обязательные к заполнению поля</div>
+                    <button type="submit" class="btn submit">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-<!-- Google Tag Manager (noscript) -->
-
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5X3HQFC"
-
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-<!-- End Google Tag Manager (noscript) -->
+{{ footer | raw }}
 
 </body>
 </html>

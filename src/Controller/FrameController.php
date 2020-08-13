@@ -69,11 +69,31 @@ class FrameController extends AbstractController
      */
     public function releaseOrder(Request $request)
     {
+//        return $this->json([
+//            'reqStatus' => -1,
+//            'reqNote'   => 'method disabled'
+//        ]);
         $data = json_decode($request->getContent(), true);
         $date = new \DateTime();
+        $reqOrderId = '';
+        if ($data['reqType'] == 'createPayment') {
+            foreach ($data['payParamList'] as $item) {
+                if (mb_strtolower($item['path']) == 'orderid') {
+                    $reqOrderId = $item['value'];
+                }
+            }
+        }else{
+            $reqOrderId = $data['esppPayId'];
+        }
+        if ($reqOrderId == ''){
+            return $this->json([
+                'reqStatus' => -1,
+                'reqNote'   => 'Empty ORDERID'
+            ]);
+        }
 
         try {
-            $order = new Order($data['payParamList'][0]['paramValue']);
+            $order = new Order($reqOrderId);
             $orderId = $order->getId();
         } catch (OrderException $exception) {
             return $this->json([
@@ -101,7 +121,7 @@ class FrameController extends AbstractController
             return $this->json([
                 'reqStatus'  => 0,
                 "dstPayId"   => $orderId,
-                "payStatus"  => (int)$result,
+                "payStatus"  => 3,
                 "statusTime" => $date->format('Y-m-d\TH:i:sP')
             ]);
         } elseif ($data['reqType'] == 'abandonPayment' && $orderId) {
@@ -114,7 +134,7 @@ class FrameController extends AbstractController
             } else {
                 return $this->json([
                     'reqStatus'        => 0,
-                    "payStatus"        => (int)$result,
+                    "payStatus"        => 3,
                     "dstPayId"         => $orderId,
                     "statusTime"       => $date->format('Y-m-d\TH:i:sP'),
                     "abandonReason"    => 1,

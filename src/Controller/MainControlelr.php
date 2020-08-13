@@ -4,19 +4,23 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainControlelr extends AbstractController
 {
+    private $url = "https://shop.digitalbazaar.ru";
     /**
      * @Route(path="/", methods={"GET"})
-    **/
+     **/
 
     public function index():Response
     {
-        return $this->render('landing/index.php.twig', ['package' => $this->getPack(), 'dt' => date('Y')]);
+        $header = $this->getHeader();
+        $footer = $this->getFooter();
+        return $this->render('landing/logo_index.php.twig', ['header' => $header, 'footer' => $footer, 'dt' => date('Y')]);
     }
 
     /**
@@ -24,10 +28,42 @@ class MainControlelr extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function formAction(Request $request):Response
+    public function formAction(Request $request)
     {
         $ret = $request->request->all();
-        return $this->json($this->sendEmail($ret));
+        $this->sendEmail($ret);
+
+        $header = $this->getHeader();
+        $footer = $this->getFooter();
+        return $this->render('landing/index.php.twig', ['header' => $header, 'footer' => $footer, 'dt' => date('Y')]);
+    }
+
+    private function getHeader()
+    {
+        // сторонняя страница сайта, с которой будем брать контент.
+        $content = file_get_contents($this->url."/ajax/header.php");
+        // определяем начало необходимого фрагмента кода, до которого мы удалим весь контент
+        $pos = strpos($content, '<body>');
+
+        // удаляем все до нужного фрагмента
+        $content = substr($content, $pos);
+        return $content;
+
+
+        dd($content);
+        // находим конец необходимого фрагмента кода
+        $pos = strpos($content, "</div>\n</nav>");
+//        dd($pos);
+        // отрезаем нужное количество символов от конца фрагмента
+        $content = substr($content, 0, $pos);
+        dd($content);
+        // выводим необходимый контент
+        dd($content);
+    }
+
+    private function getFooter()
+    {
+        return file_get_contents($this->url."/ajax/footer.php");
     }
 
     private function sendEmail($data)

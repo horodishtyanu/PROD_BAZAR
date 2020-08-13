@@ -79,6 +79,7 @@ class RostelePaymentService
             ["orderid" => $this->orderId]
         ];
         $resp['chequeText'] = str_replace("¶", PHP_EOL, $chequeText);
+        $resp['preChequeText'] = "Оплачивая данный продукт Вы даёте своё согласие на получение на указанный номер смс-сообщений, содержащих секретный код активации продукта";
         $resp['status'] = 0;
         $resp['cost'] = $this->getPrice();
 
