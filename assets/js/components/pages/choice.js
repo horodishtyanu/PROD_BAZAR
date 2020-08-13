@@ -43,7 +43,7 @@ class Choice extends React.Component {
                                                                           id={'radio-id-' + item.ID}
                                                                           value={item.ID}
                                                                           component="input"
-                                                                          checked={items[key].ITEMS.length === 1}
+                                                                          checked={items[key].ITEMS.length === 1 ? true : this.value}
                                                                           onChange={this.onChange}
                                                                       />
                                                                       <label htmlFor={'radio-id-' + item.ID} className="radio-label">
